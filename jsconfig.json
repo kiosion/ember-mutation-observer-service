@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "lib": ["ESNext"],
+    "module": "commonjs",
+    "experimentalDecorators": true
+  },
+  "exclude": ["node_modules", "dist", "tmp", "vendor", ".git", "bower_components"]
+}
