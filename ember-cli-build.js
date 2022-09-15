@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 'use strict';
 
 const EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
@@ -18,8 +19,8 @@ module.exports = function (defaults) {
   return maybeEmbroider(app, {
     skipBabel: [
       {
-        package: 'qunit',
-      },
-    ],
+        package: 'qunit'
+      }
+    ]
   });
 };
