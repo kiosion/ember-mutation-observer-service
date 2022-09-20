@@ -22,10 +22,10 @@ export default class MutationObserverService extends Service {
 
     // We want to ignore all calls if not running in a browser
     // with the MutationObserver API available
-    if (!window || typeof FastBook !== 'undefined') {
+    if (!window || typeof FastBoot !== 'undefined') {
       return;
     }
-    if (!window.ResizeObserver) {
+    if (!window.MutationObserver) {
       warn(`${addonName}: MutationObserver API not available.`, {
         id: addonName
       });
@@ -33,7 +33,7 @@ export default class MutationObserverService extends Service {
 
     this.callbacks = new Map();
     this.options = new Map();
-    this.observer = new window.ResizeObserver(this.handleMutations);
+    this.observer = new window.MutationObserver(this.handleMutations);
   }
 
   /**
@@ -54,7 +54,7 @@ export default class MutationObserverService extends Service {
    * @param {object?} options - MutationObserver options object
    */
   observe(element, callback, optionObj = { childList: true }) {
-    if (!this.isEnabeld) {
+    if (!this.isEnabled) {
       return;
     }
 
@@ -76,13 +76,13 @@ export default class MutationObserverService extends Service {
     if (callbacks) {
       callbacks.add(callback);
     } else {
-      this.callbacks.set(new WeakRef(element), new Set([callback]));
+      this.callbacks.set(element, new Set([callback]));
     }
 
     if (options) {
       this.observer.observe(element, options);
     } else {
-      this.options.set(new WeakRef(element), optionObj);
+      this.options.set(element, optionObj);
       this.observer.observe(element, optionObj);
     }
   }
@@ -106,8 +106,6 @@ export default class MutationObserverService extends Service {
       return;
     }
 
-    callbacks.delete(callback);
-
     if (!callback || !callbacks.size) {
       this.callbacks.delete(element);
       this.options.delete(element);
@@ -118,7 +116,10 @@ export default class MutationObserverService extends Service {
       this.callbacks.forEach((callbacks, element) => {
         this.observer.observe(element, this.options.get(element));
       });
+      return;
     }
+
+    callbacks.delete(callback);
   }
 
   /**
